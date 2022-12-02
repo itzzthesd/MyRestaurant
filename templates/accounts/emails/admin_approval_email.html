@@ -1,0 +1,9 @@
+{% autoescape off %}
+Hi {{user.first_name}}, 
+{% if is_approved %}
+Congratulations, you account is approved.
+{% else %}
+Sorry! your account is rejected.
+{% endif %}
+
+{% endautoescape %}
