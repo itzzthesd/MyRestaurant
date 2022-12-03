@@ -61,7 +61,7 @@ def place_order(request):
             }
             rzp_order = client.order.create(data=DATA)
             rzp_order_id = rzp_order['id']
-            print(rzp_order)
+            #print(rzp_order)
             context = {
                 'order' : order,
                 'cart_items':cart_items,
@@ -165,21 +165,21 @@ def order_complete(request):
     #return HttpResponse('order complete')
     order_number = request.GET.get('order_no')
     transaction_id = request.GET.get('trans_id')
-    #try:
-    order = Order.objects.get(order_number=order_number, payment__transaction_id=transaction_id, is_ordered=True)
-    ordered_food = OrderedFood.objects.filter(order=order)
-    subtotal = 0
-    for item in ordered_food:
-        subtotal += (item.price * item.quantity)
-    tax_data = json.loads(order.tax_data)
+    try:
+        order = Order.objects.get(order_number=order_number, payment__transaction_id=transaction_id, is_ordered=True)
+        ordered_food = OrderedFood.objects.filter(order=order)
+        subtotal = 0
+        for item in ordered_food:
+            subtotal += (item.price * item.quantity)
+        tax_data = json.loads(order.tax_data)
 
-    context = {
-        'order': order,
-        'ordered_food': ordered_food,
-        'subtotal':subtotal,
-        'tax_data':tax_data,
+        context = {
+            'order': order,
+            'ordered_food': ordered_food,
+            'subtotal':subtotal,
+            'tax_data':tax_data,
 
-    }
-    return render(request, 'orders/order_complete.html', context)
-    # except:
-    #     return redirect('home')
+        }
+        return render(request, 'orders/order_complete.html', context)
+    except:
+        return redirect('home')

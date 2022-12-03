@@ -64,7 +64,7 @@ def fooditem_by_category(request, pk=None):
     vendor = get_vendor(request)
     category = get_object_or_404(Category, pk=pk)
     fooditem = FoodItem.objects.filter(vendor=vendor, category=category)
-    print(fooditem)
+    #print(fooditem)
     context = {
         'fooditem': fooditem,
         'category':category,
@@ -206,7 +206,7 @@ def add_opening_hours(request):
             from_hour = request.POST.get('from_hour')
             to_hour = request.POST.get('to_hour')
             is_closed = request.POST.get('is_closed')
-            print(day, from_hour, to_hour, is_closed)
+            #print(day, from_hour, to_hour, is_closed)
             try:
                 hour = OpeningHour.objects.create(vendor=get_vendor(request), day=day, from_hour=from_hour,to_hour=to_hour,is_closed=is_closed)
                 if hour:
