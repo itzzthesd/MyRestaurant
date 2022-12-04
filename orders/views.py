@@ -23,6 +23,12 @@ def place_order(request):
     if cart_count <= 0:
         return redirect('marketplace')
 
+    vendors_id = []
+    for i in cart_items:
+        if i.fooditem.vendor.id not in vendors_id:
+            vendors_id.append(i.fooditem.vendor.id)
+
+
     subtotal = get_cart_amount(request)['subtotal']
     total_tax = get_cart_amount(request)['tax']
     grand_total = get_cart_amount(request)['grand_total']
@@ -48,6 +54,7 @@ def place_order(request):
             order.payment_method = request.POST['payment_method']
             order.save()
             order.order_number = generate_order_number(order.id)
+            order.vendors.add(*vendors_id)
             order.save() 
             #razorpay payment
             DATA = {
